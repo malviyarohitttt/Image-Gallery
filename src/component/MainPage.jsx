@@ -31,10 +31,9 @@ function MainPage() {
 
   return <>
     <div className="container mt-5">
-        <div>
-            <h1 className='text-center mb-4'>Image Gallary</h1>
-        </div>
-        {/* <form onSubmit={loadimages}> */}
+            <div>
+                <h1 className='text-center mb-4'>Image Gallary</h1>
+            </div>
             <div class="form-group">
                 <input onChange={(event)=>setQuery(event.target.value)} type="text" class="form-control" id="searchInput" placeholder="Search Images" />
             </div>
@@ -42,8 +41,8 @@ function MainPage() {
                 loadimages()
                 setIsLoading(true)
             }} class="btn btn-primary">Submit</button>
-        {/* </form> */}
-        <h1 className='text-center'>Images</h1>
+
+            <h1 className='text-center'>Images</h1>
         <div className='row imageContainer d-flex mt-3'>
             { isloading ? <h2>Loading</h2> : image?.map((photo)=>
                 <div className='col-md-4 img-box'>
