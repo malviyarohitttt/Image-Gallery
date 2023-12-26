@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './MainPage.css'
 import axios from 'axios';
+import IsLoading from './IsLoading/Isloading';
 
 function MainPage() {
     const [image,setImage] = useState([]);
@@ -32,7 +33,7 @@ function MainPage() {
   return <>
     <div className="container mt-5">
             <div>
-                <h1 className='text-center mb-4'>Image Gallary</h1>
+                <h1 className='text-center mb-4 text-white'>Image Gallary</h1>
             </div>
             <div class="form-group">
                 <input onChange={(event)=>setQuery(event.target.value)} type="text" class="form-control" id="searchInput" placeholder="Search Images" />
@@ -42,9 +43,9 @@ function MainPage() {
                 setIsLoading(true)
             }} class="btn btn-primary">Submit</button>
 
-            <h1 className='text-center'>Images</h1>
+            <h1 className='text-center text-white'>Images</h1>
         <div className='row imageContainer d-flex mt-3'>
-            { isloading ? <h2>Loading</h2> : image?.map((photo)=>
+            { isloading ? <IsLoading/> : image?.map((photo)=>
                 <div className='col-md-4 img-box'>
                     <div className="img">
                     <img className='w-100' src={photo.src.original} alt={photo.alt} />
