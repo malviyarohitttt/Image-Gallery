@@ -64,18 +64,23 @@ function MainPage() {
 
         <h1 className='text-center text-white'>Images</h1>
         <div className='row imageContainer d-flex mt-3'>
-            { isloading ? <IsLoading/> : image?.map((photo)=>
-                <div className='col-md-4 img-box'>
-                    <div className="img">
-                        <div className="imageDiv">
-                          <img src={photo.src.original} alt={photo.alt} />
-                        </div>
-                        <div className="btnDiv p-1">
-                            <button onClick={()=>{downloadButton(photo.src.original)}} className='btn btn-success w-100'>Download</button>
+            { isloading ? <IsLoading/> 
+                : image.length === 0 ? 
+                <h1 className="w-100 text-center text-white">
+                    No image related to <span className="text-dark">{query}</span>
+                </h1> 
+                :image?.map((photo)=>
+                    <div className='col-md-4 img-box'>
+                        <div className="img">
+                            <div className="imageDiv">
+                            <img src={photo.src.original} alt={photo.alt} />
+                            </div>
+                            <div className="btnDiv p-1">
+                                <button onClick={()=>{downloadButton(photo.src.original)}} className='btn btn-success w-100'>Download</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            ) 
+                ) 
             }
             <div className='d-flex w-100 justify-content-around align-items-center mt-2'>
                 <button onClick={()=>setPage(page-1)} className='btn btn-primary'>Prev</button>
