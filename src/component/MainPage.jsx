@@ -6,12 +6,14 @@ import IsLoading from './IsLoading/Isloading';
 function MainPage() {
     const [image,setImage] = useState([]);
     const [query,setQuery] = useState('nature');
+    const [page,setPage] = useState(1);
     const [isloading,setIsLoading] = useState(true);
     
     if(query.length==0){setQuery('nature')}
 
     const loadimages = async ()=>{
-            const api = "https://api.pexels.com/v1/search?query="+`${query}`+"&per_page=21"
+            window.scrollTo(0,0);
+            const api = "https://api.pexels.com/v1/search?query="+`${query}`+"&per_page=12&page="+`${page}`;
             const apiKey = "1ldQPaQOIK5ZVAr9qCVtSyTLNI17oZAKkBsIACMj9fh4z0Y9uf2Dbtuu"
             try {
                 let response = await axios.get(api,{
@@ -28,22 +30,21 @@ function MainPage() {
 
     useEffect(()=>{
         loadimages();
-    },[])
+    },[page])
 
   return <>
     <div className="container mt-5">
-            <div>
-                <h1 className='text-center mb-4 text-white'>Image Gallary</h1>
-            </div>
-            <div class="form-group">
-                <input onChange={(event)=>setQuery(event.target.value)} type="text" class="form-control" id="searchInput" placeholder="Search Images" />
-            </div>
-            <button onClick={()=>{
+        <div>
+            <h1 className='text-center mb-4 text-white'>Image Gallary</h1>
+        </div>
+        <div class="form-group">
+            <input onChange={(event)=>setQuery(event.target.value)} type="text" class="form-control" id="searchInput" placeholder="Search Images" />            </div>
+        <button onClick={()=>{
                 loadimages()
                 setIsLoading(true)
-            }} class="btn btn-primary">Submit</button>
+        }} class="btn btn-primary">Submit</button>
 
-            <h1 className='text-center text-white'>Images</h1>
+        <h1 className='text-center text-white'>Images</h1>
         <div className='row imageContainer d-flex mt-3'>
             { isloading ? <IsLoading/> : image?.map((photo)=>
                 <div className='col-md-4 img-box'>
@@ -53,6 +54,10 @@ function MainPage() {
                 </div>
             ) 
             }
+            <div className='d-flex w-100 justify-content-around align-items-center mt-2'>
+                <button onClick={()=>setPage(page-1)} className='btn btn-primary'>Prev</button>
+                <button onClick={()=>setPage(page+1)} className='btn btn-primary'>Next</button>
+            </div>
         </div>
     </div>
   </>
