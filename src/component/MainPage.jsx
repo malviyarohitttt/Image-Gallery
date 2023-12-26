@@ -11,6 +11,24 @@ function MainPage() {
     
     if(query.length==0){setQuery('nature')}
 
+    const downloadButton =  (imageurl)=>{
+        fetch(imageurl)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const link = document.createElement('a');
+          const fileNeme = imageurl.split('/').pop();
+          link.href = URL.createObjectURL(blob);
+          link.download = fileNeme;
+          link.click();
+          URL.revokeObjectURL(link.href);
+
+        })
+        .catch((error) => {
+          console.error('Error fetching the image:', error);
+        });
+        
+    }
+
     const loadimages = async ()=>{
             window.scrollTo(0,0);
             const api = "https://api.pexels.com/v1/search?query="+`${query}`+"&per_page=12&page="+`${page}`;
@@ -35,7 +53,7 @@ function MainPage() {
   return <>
     <div className="container mt-5">
         <div>
-            <h1 className='text-center mb-4 text-white'>Image Gallary</h1>
+            <h1 className='text-center mb-4 text-white'>Image Gallery</h1>
         </div>
         <div class="form-group">
             <input onChange={(event)=>setQuery(event.target.value)} type="text" class="form-control" id="searchInput" placeholder="Search Images" />            </div>
@@ -49,7 +67,12 @@ function MainPage() {
             { isloading ? <IsLoading/> : image?.map((photo)=>
                 <div className='col-md-4 img-box'>
                     <div className="img">
-                    <img className='w-100' src={photo.src.original} alt={photo.alt} />
+                        <div className="imageDiv">
+                          <img src={photo.src.original} alt={photo.alt} />
+                        </div>
+                        <div className="btnDiv p-1">
+                            <button onClick={()=>{downloadButton(photo.src.original)}} className='btn btn-success w-100'>Download</button>
+                        </div>
                     </div>
                 </div>
             ) 

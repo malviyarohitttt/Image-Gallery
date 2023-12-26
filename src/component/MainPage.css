@@ -1,7 +1,7 @@
 html {
     scroll-behavior: smooth;
   }
-            
+
 body{
     background-color: blueviolet;
     font-family: 'Poppins', sans-serif;
@@ -12,15 +12,19 @@ body{
 }
 .img-box{
     /* border: 1px solid black; */
-    height: 400px;
+    height: 485px;
     padding: 15px;
 }
 
 .img{
     border: 1px solid black;
-    overflow: hidden;
     width: 100%;
     height: 100%;
+}
+.imageDiv{
+    overflow: hidden;
+    width: 100%;
+    height: 90%;
 }
 img{
     transition: 0.3s ease-in-out;
