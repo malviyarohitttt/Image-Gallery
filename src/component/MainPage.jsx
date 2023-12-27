@@ -9,7 +9,7 @@ function MainPage() {
     const [page,setPage] = useState(1);
     const [isloading,setIsLoading] = useState(true);
     
-    if(query.length==0){setQuery('nature')}
+    if(query.length===0){setQuery('nature')}
 
     const downloadButton =  (imageurl)=>{
         fetch(imageurl)
@@ -21,12 +21,10 @@ function MainPage() {
           link.download = fileNeme;
           link.click();
           URL.revokeObjectURL(link.href);
-
         })
         .catch((error) => {
           console.error('Error fetching the image:', error);
         });
-        
     }
 
     const loadimages = async ()=>{
@@ -56,36 +54,39 @@ function MainPage() {
             <h1 className='text-center mb-4 text-white'>Image Gallery</h1>
         </div>
         <div class="form-group">
-            <input onChange={(event)=>setQuery(event.target.value)} type="text" class="form-control" id="searchInput" placeholder="Search Images" />            </div>
+            <input onChange={(event)=>setQuery(event.target.value)} type="text" class="form-control" id="searchInput" placeholder="Search Images" />          
+        </div>
         <button onClick={()=>{
-                loadimages()
-                setIsLoading(true)
-        }} class="btn btn-primary">Submit</button>
+            loadimages()
+            setIsLoading(true)
+        }} class="btn nav-btn">Submit</button>
 
-        <h1 className='text-center text-white'>Images</h1>
+        <h1 className='text-center'><span className='heading'>Image</span></h1>
         <div className='row imageContainer d-flex mt-3'>
-            { isloading ? <IsLoading/> 
+            { isloading ? <IsLoading/>
                 : image.length === 0 ? 
-                <h1 className="w-100 text-center text-white">
+                <h1 className="w-100 text-center text-white mt-3">
                     No image related to <span className="text-dark">{query}</span>
                 </h1> 
-                :image?.map((photo)=>
+                :
+                image?.map((photo)=>
                     <div className='col-md-4 img-box'>
                         <div className="img">
                             <div className="imageDiv">
-                            <img src={photo.src.original} alt={photo.alt} />
+                                <img src={photo.src.original} alt={photo.alt} />
                             </div>
                             <div className="btnDiv p-1">
-                                <button onClick={()=>{downloadButton(photo.src.original)}} className='btn btn-success w-100'>Download</button>
+                                <button onClick={()=>{downloadButton(photo.src.original)}} className='btn downloadBtn w-100'>Download</button>
                             </div>
                         </div>
                     </div>
                 ) 
             }
-            <div className='d-flex w-100 justify-content-around align-items-center mt-2'>
-                <button onClick={()=>setPage(page-1)} className='btn btn-primary'>Prev</button>
-                <button onClick={()=>setPage(page+1)} className='btn btn-primary'>Next</button>
-            </div>
+            { !isloading && image.length!==0 ? <div className='d-flex w-100 justify-content-around align-items-center mt-2 mb-4'>
+                <button onClick={()=>setPage(page-1)} className='btn nav-btn'>Prev</button>
+                <button onClick={()=>setPage(page+1)} className='btn nav-btn'>Next</button>
+            </div> : <p></p>}
+            
         </div>
     </div>
   </>
