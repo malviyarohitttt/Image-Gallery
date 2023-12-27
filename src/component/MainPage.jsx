@@ -48,7 +48,7 @@ function MainPage() {
     },[page])
     
     if(query.length===0){
-        setQuery('nature'); 
+        setQuery('nature') 
         loadimages();
     }
 
@@ -72,19 +72,25 @@ function MainPage() {
             <div className='col-md-12'>
                 <h1 className='text-center'><span className='heading'>Image</span></h1>
             </div>
-            <div className='col-md-6 mt-5'>
+        </div>
+        <div className="row">
+            { !isloading && image.length!==0 ? <>
+                <div className='col-md-6 mt-5'>
                 <h4 className='text-center info-heading'>Page Number : <span className='text-white'>{page}</span></h4>
             </div>
             <div className='col-md-6 mt-5'>
                 <h4 className='text-center info-heading'>Total images : <span className='text-white'>{image.length}</span></h4>
             </div>
+            </>: <span></span> }
+            
         </div>
 
         <div className='row imageContainer d-flex mt-3'>
             { isloading ? <IsLoading/>
                 : image.length === 0 ? 
                 <h1 className="w-100 text-center text-white mt-3">
-                    No image related to <span className="text-dark">{query}</span>
+                    {query==='nature' ? <p></p> : <>No image related to <span className="text-dark">{query}</span></>}
+                    
                 </h1> 
                 :
                 image?.map((photo)=>
