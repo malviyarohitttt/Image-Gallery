@@ -9,59 +9,77 @@ function MainPage() {
     const [page,setPage] = useState(1);
     const [isloading,setIsLoading] = useState(true);
     
-    if(query.length===0){setQuery('nature')}
-
+    
     const downloadButton =  (imageurl)=>{
         fetch(imageurl)
         .then((response) => response.blob())
         .then((blob) => {
-          const link = document.createElement('a');
-          const fileNeme = imageurl.split('/').pop();
-          link.href = URL.createObjectURL(blob);
-          link.download = fileNeme;
-          link.click();
-          URL.revokeObjectURL(link.href);
+            const link = document.createElement('a');
+            const fileNeme = imageurl.split('/').pop();
+            link.href = URL.createObjectURL(blob);
+            link.download = fileNeme;
+            link.click();
+            URL.revokeObjectURL(link.href);
         })
         .catch((error) => {
-          console.error('Error fetching the image:', error);
+            console.error('Error fetching the image:', error);
         });
     }
-
+    
     const loadimages = async ()=>{
-            window.scrollTo(0,0);
-            const api = "https://api.pexels.com/v1/search?query="+`${query}`+"&per_page=12&page="+`${page}`;
-            const apiKey = "1ldQPaQOIK5ZVAr9qCVtSyTLNI17oZAKkBsIACMj9fh4z0Y9uf2Dbtuu"
-            try {
-                let response = await axios.get(api,{
-                    headers:{
-                        Authorization: `${apiKey}`
-                    }
-                })
+        window.scrollTo(0,0);
+        const api = "https://api.pexels.com/v1/search?query="+`${query}`+"&per_page=12&page="+`${page}`;
+        const apiKey = "1ldQPaQOIK5ZVAr9qCVtSyTLNI17oZAKkBsIACMj9fh4z0Y9uf2Dbtuu"
+        try {
+            let response = await axios.get(api,{
+                headers:{
+                    Authorization: `${apiKey}`
+                }
+            })
             setIsLoading(false)
             setImage(response.data.photos)
         } catch (error) {
             console.log(error)
         }
     }
-
+    
     useEffect(()=>{
         loadimages();
     },[page])
+    
+    if(query.length===0){
+        setQuery('nature'); 
+        loadimages();
+    }
 
-  return <>
-    <div className="container mt-5">
+    
+    return <>
+    <div className="container mt-4">
         <div>
             <h1 className='text-center mb-4 text-white'>Image Gallery</h1>
         </div>
         <div class="form-group">
-            <input onChange={(event)=>setQuery(event.target.value)} type="text" class="form-control" id="searchInput" placeholder="Search Images" />          
+            <input onChange={(event)=>{
+                setQuery(event.target.value)
+            }} type="text" class="form-control" id="searchInput" placeholder="Search Images" />          
         </div>
         <button onClick={()=>{
-            loadimages()
             setIsLoading(true)
+            loadimages()
         }} class="btn nav-btn">Submit</button>
 
-        <h1 className='text-center'><span className='heading'>Image</span></h1>
+        <div className="row">
+            <div className='col-md-12'>
+                <h1 className='text-center'><span className='heading'>Image</span></h1>
+            </div>
+            <div className='col-md-6 mt-5'>
+                <h4 className='text-center info-heading'>Page Number : <span className='text-white'>{page}</span></h4>
+            </div>
+            <div className='col-md-6 mt-5'>
+                <h4 className='text-center info-heading'>Total images : <span className='text-white'>{image.length}</span></h4>
+            </div>
+        </div>
+
         <div className='row imageContainer d-flex mt-3'>
             { isloading ? <IsLoading/>
                 : image.length === 0 ? 
@@ -80,7 +98,7 @@ function MainPage() {
                             </div>
                         </div>
                     </div>
-                ) 
+                )
             }
             { !isloading && image.length!==0 ? <div className='d-flex w-100 justify-content-around align-items-center mt-2 mb-4'>
                 <button onClick={()=>setPage(page-1)} className='btn nav-btn'>Prev</button>
