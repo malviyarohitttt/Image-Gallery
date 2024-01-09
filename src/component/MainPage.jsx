@@ -64,6 +64,7 @@ function MainPage() {
             }} type="text" class="form-control" id="searchInput" placeholder="Search Images" />          
         </div>
         <button onClick={()=>{
+            setPage(1);
             setIsLoading(true)
             loadimages()
         }} class="btn nav-btn">Submit</button>
